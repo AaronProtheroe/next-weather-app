@@ -1,34 +1,18 @@
 "use client";
 
 import CustomInput from "@/components/Input";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+async function getWeather(city: string) {
+  const res = await fetch(`api/weather?city=${city}`);
+  return res.json();
+}
 
 export default function Home() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/weather");
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        const result = await response.json();
-        setData(result);
-      } catch (err) {
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  console.log(data);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["weather"],
+    queryFn: () => getWeather("London"),
+  });
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-800">
