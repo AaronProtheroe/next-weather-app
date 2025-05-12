@@ -3,8 +3,9 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const city = searchParams.get("city");
+
   try {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=d020d4294df30052d5120dfff8353fb1`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}&units=metric`;
 
     const response = await fetch(apiUrl, {
       headers: {
