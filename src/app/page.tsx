@@ -9,15 +9,17 @@ import { useWeather } from "./hooks/useWeather";
 export default function Home() {
   const [city, setCity] = useState("");
 
-  const { refetch, weatherData, isFetching, data } = useWeather(city);
+  const { refetch, weatherData, isFetching, data, error } = useWeather(city);
 
   const states = {
-    empty: data?.message === "Nothing to geocode" && !isFetching,
+    empty: !error && data?.message === "Nothing to geocode" && !isFetching,
     invalid:
+      !error &&
       weatherData === null &&
       !isFetching &&
       data.message !== "Nothing to geocode",
-    loading: isFetching,
+    loading: !error && isFetching,
+    error: error,
   };
 
   const handleClick = () => {
@@ -39,6 +41,9 @@ export default function Home() {
           Search
         </button>
       </div>
+      {states.error && (
+        <h1 className="text-gray-300">An error occured please try again</h1>
+      )}
       {states.empty && (
         <h1 className="text-gray-300">Please enter a city name to begin</h1>
       )}
