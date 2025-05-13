@@ -2,35 +2,13 @@
 
 import CustomInput from "@/components/Input";
 import WeatherCard from "@/components/WeatherCard";
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
-
-async function getWeather(city: string) {
-  const res = await fetch(`api/weather?city=${city}`);
-  return res.json();
-}
+import { useState } from "react";
+import { useWeather } from "./hooks/useWeather";
 
 export default function Home() {
-  const { data, isFetching, error, refetch } = useQuery({
-    queryKey: ["weather"],
-    queryFn: () => getWeather(city),
-  });
-
   const [city, setCity] = useState("");
 
-  const weatherData = useMemo(() => {
-    if (data && data.weather) {
-      return {
-        temperature: data.main.temp,
-        weather: data.weather[0].main,
-        description: data.weather[0].description,
-        city: data.name,
-      };
-    }
-    return null;
-  }, [data]);
-
-  console.log(data);
+  const { refetch, weatherData, isFetching } = useWeather(city);
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-800">
@@ -48,7 +26,9 @@ export default function Home() {
         </button>
       </div>
       {weatherData === null && !isFetching && (
-        <h1 className="text-gray-300">No data found</h1>
+        <h1 className="text-gray-300">
+          No data found. Did you enter a valid city?
+        </h1>
       )}
       {isFetching && <h1 className="text-gray-300">Loading...</h1>}
       {!isFetching && weatherData !== null && (
