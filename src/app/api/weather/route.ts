@@ -18,8 +18,14 @@ export async function GET(request: Request) {
 
     return NextResponse.json(data);
   } catch (error) {
-    if (error) {
-      return error;
-    }
+    console.error("Weather API error:", error);
+
+    return NextResponse.json(
+      {
+        error: "Failed to fetch weather data",
+        message: error || "Unknown error",
+      },
+      { status: 500 }
+    );
   }
 }
