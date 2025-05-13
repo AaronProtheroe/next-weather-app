@@ -24,5 +24,5 @@ export const useWeather = (city: string) => {
     return null;
   }, [data]);
 
-  return { weatherData, isFetching, error, refetch };
+  return { weatherData, isFetching, error, refetch, data };
 };

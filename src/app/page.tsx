@@ -8,7 +8,16 @@ import { useWeather } from "./hooks/useWeather";
 export default function Home() {
   const [city, setCity] = useState("");
 
-  const { refetch, weatherData, isFetching } = useWeather(city);
+  const { refetch, weatherData, isFetching, data } = useWeather(city);
+
+  const states = {
+    empty: data?.message === "Nothing to geocode" && !isFetching,
+    invalid:
+      weatherData === null &&
+      !isFetching &&
+      data.message !== "Nothing to geocode",
+    loading: isFetching,
+  };
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-800">
@@ -25,12 +34,15 @@ export default function Home() {
           Search
         </button>
       </div>
-      {weatherData === null && !isFetching && (
+      {states.empty && (
+        <h1 className="text-gray-300">Please enter a city name to begin</h1>
+      )}
+      {states.invalid && (
         <h1 className="text-gray-300">
           No data found. Did you enter a valid city?
         </h1>
       )}
-      {isFetching && <h1 className="text-gray-300">Loading...</h1>}
+      {states.loading && <h1 className="text-gray-300">Loading...</h1>}
       {!isFetching && weatherData !== null && (
         <WeatherCard
           temperature={weatherData.temperature}
