@@ -1,7 +1,7 @@
 "use client";
 
-import CustomInput from "@/components/Input";
-import WeatherCard from "@/components/WeatherCard";
+import CustomInput from "@/app/components/Input";
+import WeatherCard from "@/app/components/WeatherCard";
 import { useState } from "react";
 import { useWeather } from "./hooks/useWeather";
 
@@ -20,7 +20,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-800">
+    <div className="w-full h-screen flex flex-col items-center bg-gray-800 pt-40">
       <h1 className="text-4xl text-gray-300 mb-8">Warp Weather App</h1>
       <div className="flex justify-center items-center gap-4 mb-8">
         <CustomInput
