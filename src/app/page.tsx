@@ -3,6 +3,7 @@
 import CustomInput from "@/app/components/Input";
 import WeatherCard from "@/app/components/WeatherCard";
 import { useState } from "react";
+import Spinner from "./components/Spinner";
 import { useWeather } from "./hooks/useWeather";
 
 export default function Home() {
@@ -19,9 +20,13 @@ export default function Home() {
     loading: isFetching,
   };
 
+  const handleClick = () => {
+    refetch();
+  };
+
   return (
     <div className="w-full h-screen flex flex-col items-center bg-gray-800 pt-40">
-      <h1 className="text-4xl text-gray-300 mb-8">Warp Weather App</h1>
+      <h1 className="text-5xl text-gray-300 mb-8">Warp Weather App</h1>
       <div className="flex justify-center items-center gap-4 mb-8">
         <CustomInput
           placeholder="Enter a city name"
@@ -29,7 +34,7 @@ export default function Home() {
         />
         <button
           className="px-4 py-2 bg-gray-700 text-white rounded cursor-pointer hover:bg-gray-600"
-          onClick={() => refetch()}
+          onClick={handleClick}
         >
           Search
         </button>
@@ -42,7 +47,7 @@ export default function Home() {
           No data found. Did you enter a valid city?
         </h1>
       )}
-      {states.loading && <h1 className="text-gray-300">Loading...</h1>}
+      {states.loading && <Spinner />}
       {!isFetching && weatherData !== null && (
         <WeatherCard
           temperature={weatherData.temperature}
